@@ -1,7 +1,45 @@
 component {
 
-	variables.ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-	variables.BASE = bigInt(len(ALPHABET).toString());
+	variables.DEFAULT_ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+	variables.ALPHABET = variables.DEFAULT_ALPHABET;
+	variables.BASE = bigInt(len(ALPHABET).longValue().toString());
+
+	public any function init () {
+		return this;
+	}
+
+	public void function setAlphabet (string alphabet) {
+		if (len(alphabet) == len(variables.DEFAULT_ALPHABET) && !arrayHasDuplicates(alphabet.toCharArray())) {
+			variables.ALPHABET = alphabet;
+		} else {
+			throw(message="Invalid Alphabet - the string must consist of all letters from a to z, both lower and upper case, and the digits 0 through 9");
+		}
+	}
+
+	private boolean function arrayHasDuplicates (required array input) {
+		var hs = createObject("java", "java.util.HashSet").init(arrayLen(input));
+		for (var item in input) {
+			if (hs.contains(item)) {
+				return true;
+			}
+			hs.add(item);
+		}
+
+		return false;
+	}
+
+	public string function getShuffledAlphabet () {
+		var alphabet = listToArray(variables.DEFAULT_ALPHABET, "");
+
+		for (var i = arrayLen(alphabet); i > 1; i--) {
+			var index = randRange(1, i);
+			var tmp = alphabet[index];
+			alphabet[index] = alphabet[i];
+			alphabet[i] = tmp;
+		}
+
+		return arrayToList(alphabet, "");
+	}
 
 	private any function bigInt (required string input ){
 		return createObject("java", "java.math.BigInteger").init(input);
