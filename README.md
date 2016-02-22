@@ -5,7 +5,7 @@ _a better description TBD_
 
 ## tests
 
-Download and provide a mapping to testbox in /tests/Application.cfc (or just stick testbox in the webroot), then run tests/index.cfm
+Download and provide a mapping to testbox in /tests/Application.cfc (or just stick testbox in the webroot), then run the webroot index.cfm
 
 ## support
 

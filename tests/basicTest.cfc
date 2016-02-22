@@ -6,7 +6,7 @@ component extends="testbox.system.BaseSpec" {
 			var base62 = new lib.base62();
 			var threadLocalRandom = createObject("java", "java.util.concurrent.ThreadLocalRandom");
 
-			function serializeDeserializeTest(input, expectedSerializedValue) {
+			var serializeDeserializeTest = function (input, expectedSerializedValue) {
 				var serialized = base62.fromBase10(input);
 				expect(serialized).notToBe(input);
 
@@ -29,12 +29,12 @@ component extends="testbox.system.BaseSpec" {
 			});
 
 			it("works with bigints", function() {
-				serializeDeserializeTest(9223372036854775807, "k9viXaIfiWh");
+				serializeDeserializeTest("9223372036854775807", "k9viXaIfiWh");
 			});
 
 			it("doesnt work with one more than the higest bigint", function() {
 				expect(function() {
-					serializeDeserializeTest(9223372036854775808);
+					serializeDeserializeTest("9223372036854775808");
 				}).toThrow();
 			});
 

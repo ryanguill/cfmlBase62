@@ -1,0 +1,6 @@
+app:
+  image: lucee/lucee4
+  ports:
+   - "80:8888"
+  volumes:
+   - .:/var/www
