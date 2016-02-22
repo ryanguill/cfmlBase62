@@ -2,7 +2,7 @@
 <cfparam name="url.reporter" 	default="simple">
 <cfparam name="url.opt_recurse" default="true">
 <cfparam name="url.labels"		default="">
-<cfparam name="url.opt_run"		default="false">
+<cfparam name="url.opt_run"		default="true">
 <cfscript>
 // create testbox
 testBox = new testbox.system.TestBox();
@@ -23,12 +23,7 @@ if( url.opt_run ){
 			results = testBox.run( directory={ mapping=url.target, recurse=url.opt_recurse }, reporter=url.reporter, labels=url.labels );
 		}
 		if( isSimpleValue( results ) ){
-			switch( url.reporter ){
-				case "xml" : case "junit" : case "json" : case "text" : case "tap" : {
-					writeOutput( "<textarea name='tb-results-data' id='tb-results-data' rows='20' cols='100'>#results#</textarea>" );break;
-				}
-				default: { writeOutput( results ); }
-			}
+			writeOutput( results );
 		} else {
 			writeDump( results );
 		}
