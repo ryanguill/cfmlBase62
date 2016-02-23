@@ -22,7 +22,7 @@ base62.setAlphabet("b8cnqIw9WFPhp6jG5BN3KklfViZxHvomtLgsQEuUeX4Md027RSYJAyTDrzOa
 
 ## tests
 
-Download and provide a mapping to testbox in /tests/Application.cfc (or just stick testbox in the webroot), then run the webroot index.cfm
+Download and provide a mapping to testbox in `/tests/Application.cfc` (or just stick testbox in the webroot), then run the webroot index.cfm  There is also a `docker-config.yml` file so you can also just clone the repo, download testbox and `docker-config up -d` and you should be good to go to run the tests on Lucee 4.5.
 
 ## support
 
