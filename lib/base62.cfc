@@ -50,7 +50,9 @@ component {
 	}
 
 	public string function fromBase10(required numeric i) {
-		i = createObject("java", "java.lang.Long").valueOf(i);
+		var negative = (i < 0);
+
+		i = createObject("java", "java.lang.Long").valueOf(abs(i));
 
 		var sb = stringBuilder();
 		if (i == 0) {
@@ -60,7 +62,7 @@ component {
 				i = fromBase10Builder(i, sb);
 			}
 		}
-		return sb.reverse().toString();
+		return (negative ? '-' : '') & sb.reverse().toString();
 	}
 
 	private numeric function fromBase10Builder (required numeric i, required any sb) {
@@ -71,7 +73,11 @@ component {
 	}
 
 	public numeric function toBase10 (required string str) {
+		var negative = left(str, 1) == "-";
 		str = str.replaceAll("[^a-zA-Z0-9]", "");
+		if (negative) {
+			return createObject("java", "java.lang.Long").valueOf(-1 * toBase10Helper(stringBuilder(str).reverse().toString().toCharArray()).longValue());
+		}
 		return toBase10Helper(stringBuilder(str).reverse().toString().toCharArray()).longValue();
 	}
 
@@ -86,6 +92,26 @@ component {
 	private numeric function toBase10Power (required numeric n, required numeric pow) {
 		var bi = bigInt(n.longValue().toString());
 		return bi.multiply(BASE.pow(pow.intValue()));
+	}
+
+	public string function fromUUID (required string uid) {
+		var juuid = createObject("java", "java.util.UUID");
+		var i = juuid.fromString(uid);
+		var mostSig = i.getMostSignificantBits();
+		var leastSig = i.getLeastSignificantBits();
+		writedump(mostSig & " . " & leastSig);
+		return fromBase10(mostSig) & "." & fromBase10(leastSig);
+	}
+
+	public string function toUUID (required string str) {
+		if (!find(".", str)) {
+			throw(message="Expected input to toUUID to be in the form {mostSignificantBits}.{leastSignificantBits}.");
+		}
+		var mostSig = toBase10(listFirst(str, "."));
+		var leastSig = toBase10(listLast(str, "."));
+		
+		writedump(mostSig & " . " & leastSig);
+		return createObject("java", "java.util.UUID").init(mostSig, leastSig).toString();		
 	}
 
 }
